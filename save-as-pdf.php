@@ -7,7 +7,7 @@
  * Version: 1.0.0
  * Text Domain: save-as-pdf
  * Author: Restpack Inc
- * Author URI: https://restpack.io/html2pdf
+ * Author URI: https://restpack.io
  * Tested up to: 5.2.1
  * License: GNUGPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
