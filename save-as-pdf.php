@@ -29,7 +29,7 @@ class Restpack
     "icon-12.svg",
     "icon-13.svg"
   );
-  private $prefix = "restpack_key_";
+  private $prefix = "rpkey";
 
   public $default = array(
     "pdf_page" => "Full",
@@ -38,13 +38,15 @@ class Restpack
     "button_text" => "Save as PDF",
     "button_icon" => "icon-1.svg",
     "button_width" => "25px",
-    "button_position" => "Above",
-    "button_align" => "Left"
+    "button_position" => "Above Content",
+    "button_align" => "Left",
+    "display_pages_posts" => true,
+    "display_pages_pages" => true
   );
 
   function __construct()
   {
-    register_activation_hook(__FILE__, 'plugin_init');
+    register_activation_hook(__FILE__, array(&$this, 'plugin_init'));
     register_setting($this->key("options"), $this->key("options"), array(&$this, 'options_validate'));
 
     add_filter('the_content', array(&$this, 'render_button'));
@@ -117,7 +119,7 @@ class Restpack
     $options = get_option($this->key("options"));
     $button = "<div style='text-align:" . $options['button_align'] . " '>" . $this->shortcode(array()) . "</div>";
 
-    if (($options['display_pages']['posts'] && is_single()) || ($options['display_pages']['pages'] && is_page())) {
+    if (($options['display_pages_posts'] && is_single()) || ($options['display_pages_pages'] && is_page())) {
       if ($options['button_position'] === 'Above Content') {
         $content = $button . $content;
       } else {
@@ -398,8 +400,8 @@ class Restpack
           $this->key("options") .
           "[" .
           $arg["key"] .
-          "][posts]' type='checkbox' " .
-          ($options[$arg["key"]]['posts'] ? " checked=checked" : "") .
+          "_posts]' type='checkbox' " .
+          ($options[$arg["key"] . '_posts'] ? " checked=checked" : "") .
           " />
 					Posts
 				</label>
@@ -411,8 +413,8 @@ class Restpack
           $this->key("options") .
           "[" .
           $arg["key"] .
-          "][pages]' type='checkbox' " .
-          ($options[$arg["key"]]['pages'] ? " checked=checked" : "") .
+          "_pages]' type='checkbox' " .
+          ($options[$arg["key"] . '_pages'] ? " checked=checked" : "") .
           " />
 					Pages
 				</label>";
