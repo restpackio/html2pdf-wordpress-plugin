@@ -15,8 +15,9 @@ window.document.addEventListener("click", function(event) {
     var props = elem.getAttribute("data-props");
 
     document.body.style.cursor = "wait";
+    var ajaxcallurl = window.ajaxcallurl;
 
-    fetch("/wp-admin/admin-ajax.php", {
+    fetch(ajaxcallurl, {
       method: "POST",
       body: "action=restpack_ajax",
       headers: {
@@ -30,10 +31,9 @@ window.document.addEventListener("click", function(event) {
       .then(function(data) {
         if (data.error) return alert(data.error);
         window.open(data.image);
-        // window.location = data.image;
       })
       .catch(function(error) {
-        alert(console.error());
+        alert(error);
       });
 
     try {
